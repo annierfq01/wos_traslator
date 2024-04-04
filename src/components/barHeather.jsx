@@ -53,7 +53,7 @@ export default function BarHeather() {
         <Outlet className="h-full w-full"/>
       </MenuContext.Provider>
       <div className="bg-gray-900 text-white text-sm flex flex-row justify-center">
-          <p>Copyrigt@ eqipo corporation 2024</p>
+          <p>Copyright@ Annier J. Fajardo Quesada 2024</p>
       </div>
     </div>
     </LangContext.Provider>
