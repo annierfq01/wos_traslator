@@ -14,9 +14,9 @@ const router2 = createBrowserRouter([
     element: <BarHeather />,
     errorElement: <p>Error</p>,
     children: [
-      { path: "/wos_traslator/", element: <Home /> },
-      { path: "/wos_traslator/board/:Path", element: <Board />, loader:loaderBoard},
-      { path: "/wos_traslator/about", element: <About/>}
+      { path: "/", element: <Home /> },
+      { path: "/board/:Path", element: <Board />, loader:loaderBoard},
+      { path: "/about", element: <About/>}
     ],
   },
 ]);
