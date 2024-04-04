@@ -21,14 +21,14 @@ export default function BarHeather() {
         <IoMenuSharp className="hover:cursor-pointer text-2xl sm:hidden" onClick={()=>{setIsMenu(!isMenu)}}/>
         <div className="flex flex-row space-x-3">
           <SiMicrosoftacademic className="text-2xl" />
-          <button onClick={() => navigate("/")}>WoS Traslator</button>
+          <button onClick={() => navigate("/wos_traslator/")}>WoS Traslator</button>
         </div>
         <div className="flex flex-row space-x-4">
           <MdSettings
             className="hover:cursor-pointer text-2xl"
             onClick={() => setSetting(true)}
           />
-          <MdInfo className="hover:cursor-pointer text-2xl" onClick={() => navigate("/about")}/>
+          <MdInfo className="hover:cursor-pointer text-2xl" onClick={() => navigate("/wos_traslator/about")}/>
           {setting ? (
               <div
                 className="w-52 h-52 right-6 backdrop-filter backdrop-blur-md absolute shadow-xl text-black"

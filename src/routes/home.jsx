@@ -19,10 +19,10 @@ export default function Home() {
         </p>
         <div className="text-white space-x-5">
           <button className=" bg-red-400 h-8 w-20 mt-5 rounded-xl" onClick={()=>{
-            navigate('/board/no');
+            navigate('/wos_traslator/board/no');
           }}>{lang[language].home.importar}</button>
           <button className="bg-red-400 dark:bg-blue-300 h-8 w-20 mt-5 rounded-xl" onClick={()=>{
-            navigate('/board/new');
+            navigate('/wos_traslator/board/new');
           }}>{lang[language].home.nuevo}</button>
         </div>
       </div>
