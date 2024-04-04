@@ -1,6 +1,5 @@
 {
   "name": "wos-traslation",
-  "homepage": "https://annierfq01.github.io/wos_traslator",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
