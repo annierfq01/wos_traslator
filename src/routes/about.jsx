@@ -8,7 +8,7 @@ export default function About(){
 
     return(
         <div className='w-full h-full'>
-            <div className=" w-full bg-[url('waveSup.svg')] h-40 mt-[-2rem]"/>
+            <div className="w-full bg-[url('waveSup.svg')] h-40 mt-[-2rem]"/>
             <div className='w-full h-full mx-6 my-4 text-justify'>
                 {lang[language].about.map(item=>{
                     return(

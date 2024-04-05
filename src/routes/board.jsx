@@ -47,13 +47,14 @@ function exporter (data){
     ret += "TA  - " + data[key].res_journal + "\n";
     ret += "JT  - " + data[key].journal + "\n";
 
-    let kws = data[key].keywords.split(";");
+    
+    let kws = data[key].keywords.replace(/,/g, ';').replace(/ {2}/g, ' ').replace(/; /g, ';').replace(/ ;/g, ';').split(";");
     for(let i = 0; i < kws.length; i++){
       ret += "MH  - " + kws[i] + "\n";
     }
 
 
-    ret += "\n";
+    ret += "\n"; 
   }
 
   const blob = new Blob([ret], { type: "text/plain" });
@@ -253,7 +254,7 @@ export default function Board() {
             return (
               <div className="flex flex-row justify-between items-center">
                 <p
-                  className="hover:cursor-pointer"
+                  className="hover:cursor-pointer w-full"
                   onClick={() => {
                     setActual(item.id);
                   }}
