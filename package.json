@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.12",
     "@mui/material": "^5.15.14",
+    "@vercel/analytics": "^1.2.2",
     "cra-template-pwa": "2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,8 +28,8 @@
     "workbox-streams": "^6.4.2"
   },
   "scripts": {
-    "predeploy" : "yarn run build",
-    "deploy" : "gh-pages -d build",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

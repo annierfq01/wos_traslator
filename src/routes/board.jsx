@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import { SiConvertio } from "react-icons/si";
 import { MenuContext, LangContext } from "../components/barHeather";
 import { lang } from "../language";
+import {track} from '@vercel/analytics';
 import { addEntryToIndexedDB, deleteKeyFromIndexedDB, getDictFromIndexedDB, saveDictToIndexedDB } from "../database";
 
 function generateRandom(x){
@@ -222,10 +223,14 @@ export default function Board() {
           <MdSave
             className="hover:cursor-pointer"
             onClick={() => {
+              track("Save");
               handleSave();
             }}
           />
-          <SiConvertio className="hover:cursor-pointer" onClick={()=>{exporter(data)}}/>
+          <SiConvertio className="hover:cursor-pointer" onClick={()=>{
+            track("Export");
+            exporter(data);
+            }}/>
         </div>
         <div className="text-white px-4 pt-4 h-full scrollbar-thin overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-blue-800 scrollbar-track-blue-300">
           {alias.map((item) => {

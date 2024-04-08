@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { lang } from "../language";
 import { LangContext } from "../components/barHeather";
 import { clearIndexedDB, saveDictToIndexedDB } from "../database";
+import {track} from '@vercel/analytics';
 
 const initDB = (callBack)=>{
   clearIndexedDB().then(()=>{
@@ -49,9 +50,11 @@ export default function Home() {
         </p>
         <div className="text-white space-x-5">
           <button className=" bg-red-400 h-8 w-20 mt-5 rounded-xl" onClick={()=>{
+            track("Inported");
             getDB(()=>{navigate('/board');});
           }}>{lang[language].home.importar}</button>
           <button className="bg-red-400 dark:bg-blue-300 h-8 w-20 mt-5 rounded-xl" onClick={()=>{
+            track("New");
             initDB(()=>{navigate('/board');});
           }}>{lang[language].home.nuevo}</button>
         </div>

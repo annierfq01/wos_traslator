@@ -2,6 +2,7 @@ import * as React from "react";
 import { IoMenuSharp } from "react-icons/io5";
 import { MdDarkMode, MdInfo, MdSettings} from "react-icons/md";
 import { SiMicrosoftacademic } from 'react-icons/si'
+import {track} from '@vercel/analytics';
 
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -32,7 +33,10 @@ export default function BarHeather() {
             className="hover:cursor-pointer text-2xl"
             onClick={() => setSetting(true)}
           />
-          <MdInfo className="hover:cursor-pointer text-2xl" onClick={() => navigate("/about")}/>
+          <MdInfo className="hover:cursor-pointer text-2xl" onClick={() => {
+            track("About");
+            navigate("/about");
+            }}/>
           {setting ? (
               <div
                 className="w-52 h-52 right-6 backdrop-filter backdrop-blur-md absolute shadow-xl text-black"
