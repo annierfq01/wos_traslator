@@ -4,6 +4,36 @@ import home from '../images/home.jpg';
 import { useNavigate } from "react-router-dom";
 import { lang } from "../language";
 import { LangContext } from "../components/barHeather";
+import { clearIndexedDB, saveDictToIndexedDB } from "../database";
+
+const initDB = (callBack)=>{
+  clearIndexedDB().then(()=>{
+    callBack();
+  });
+}
+
+const getDB = (callBack)=>{
+  const inputFile = document.createElement("input");
+  inputFile.type = "file";
+  inputFile.accept = ".json";
+  inputFile.addEventListener("change", (e)=>{
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const content = JSON.parse(e.target.result);
+      //setData(content);
+      initDB(()=>{
+        saveDictToIndexedDB(content);
+        callBack();
+      })
+      //saveDictToIndexedDB(content);
+    };
+
+    reader.readAsText(file);
+  })
+  inputFile.click();
+}
 
 export default function Home() {
   const navigate = useNavigate()
@@ -19,10 +49,10 @@ export default function Home() {
         </p>
         <div className="text-white space-x-5">
           <button className=" bg-red-400 h-8 w-20 mt-5 rounded-xl" onClick={()=>{
-            navigate('/board/no');
+            getDB(()=>{navigate('/board');});
           }}>{lang[language].home.importar}</button>
           <button className="bg-red-400 dark:bg-blue-300 h-8 w-20 mt-5 rounded-xl" onClick={()=>{
-            navigate('/board/new');
+            initDB(()=>{navigate('/board');});
           }}>{lang[language].home.nuevo}</button>
         </div>
       </div>

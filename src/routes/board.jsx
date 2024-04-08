@@ -3,14 +3,9 @@ import * as React from "react";
 import { MdDelete, MdEdit, MdSave } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { SiConvertio } from "react-icons/si";
-import { useLoaderData } from "react-router-dom";
 import { MenuContext, LangContext } from "../components/barHeather";
 import { lang } from "../language";
-
-export function loaderBoard({ params }) {
-  const ret = params.Path.replace(/&/g, "/"); // (/\//g, '&')
-  return ret;
-}
+import { addEntryToIndexedDB, deleteKeyFromIndexedDB, getDictFromIndexedDB, saveDictToIndexedDB } from "../database";
 
 function generateRandom(x){
   const n = '1234567890';
@@ -66,7 +61,7 @@ function exporter (data){
   URL.revokeObjectURL(url);
 }
 
-const model = {
+export const model = {
   "id": {
     alias: "",
     title: "",
@@ -126,6 +121,7 @@ export default function Board() {
     const r = await window.confirm(lang[language].board.del_entry);
     if (!r) return;
     delete data[id];
+    deleteKeyFromIndexedDB(id);
 
     let t = [];
     for (let i in data) {
@@ -134,6 +130,7 @@ export default function Board() {
     }
     setAlias(t);
     setActual("id");
+
   };
 
   const handelSaveEntry = () => {
@@ -143,8 +140,7 @@ export default function Board() {
     }
 
     let t = data;
-    
-    t[t_actual] = {
+    let content = {
       alias: identifier.current.value,
       title: title.current.value,
       autors: autors,
@@ -152,8 +148,11 @@ export default function Board() {
       keywords: keys.current.value,
       journal: journal.current.value,
       res_journal: res_journal.current.value
-    };
+    }
+    
+    t[identifier.current.value] = content;
     setData(t);
+    addEntryToIndexedDB(identifier.current.value, content);
 
     let t2 = [];
     for (let i in data) {
@@ -177,7 +176,7 @@ export default function Board() {
   React.useEffect(() => {
     let t = [];
     for (let i in data) {
-      if (i === "id") continue;
+      if (i === "id" || i === "") continue;
       t.push({ id: i, alias: data[i]["alias"] });
     }
     setAlias(t);
@@ -200,34 +199,13 @@ export default function Board() {
     reformatActual();
   }, [actual]);
 
-  const inputRef = React.useRef(null);
-  const js = useLoaderData();
-  const handleClick = () => {
-    inputRef.current.click();
-  };
-
-  const handleChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const content = JSON.parse(e.target.result);
-      setData(content);
-    };
-
-    reader.readAsText(file);
-  };
-
   const isMenu = React.useContext(MenuContext);
 
   React.useEffect(() => {
-      if (js !== "no") {
-        //setData(model);
-        //setActual("id")
-      } else {
-        handleClick();
-      }
-    });
+      getDictFromIndexedDB().then((r)=>{
+        setData(r);
+      })
+    }, []);
 
   const MenuLateral = () => {
     //if(!isMenu && height<500) return null;
@@ -252,7 +230,7 @@ export default function Board() {
         <div className="text-white px-4 pt-4 h-full scrollbar-thin overflow-y-scroll scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-blue-800 scrollbar-track-blue-300">
           {alias.map((item) => {
             return (
-              <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-row justify-between items-center hover:bg-blue-400 rounded-full">
                 <p
                   className="hover:cursor-pointer w-full"
                   onClick={() => {
@@ -277,15 +255,8 @@ export default function Board() {
 
   //{data?<pre>{JSON.stringify(data, null, 2)}</pre>:null}
   return (
-    <div className="w-full h-[91vh] flex flex-row">
-      <input
-        type="file"
-        ref={inputRef}
-        style={{ display: "none" }}
-        accept=".json"
-        onChange={handleChange}
-      />
-      
+    <div className="w-full h-[91vh] flex flex-row">   
+
       <div className="hidden md:flex">
           <MenuLateral />
       </div>
@@ -367,7 +338,7 @@ export default function Board() {
             }}
           />
           <div className="flex flex-row space-x-4 w-full">
-            <TextField label={lang[language].board.autor} className="w-full" inputRef={autor} />
+            <TextField label={lang[language].board.autor} className="w-full" inputRef={autor}/>
             <TextField
               label={lang[language].board.instit}
               className="w-full"

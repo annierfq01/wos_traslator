@@ -11,7 +11,11 @@ export const LangContext = React.createContext(null);
 export default function BarHeather() {
   const [setting, setSetting] = React.useState(false);
   const [isMenu, setIsMenu] = React.useState(false);
-  const [language, setLanguage] = React.useState("en");
+  let l = navigator.language.substring(0, 2);
+  if (! ["es", "en"].includes(l)){
+    l = "en";
+  }
+  const [language, setLanguage] = React.useState(l);
 
   const navigate = useNavigate();
   return (
@@ -21,7 +25,7 @@ export default function BarHeather() {
         <IoMenuSharp className="hover:cursor-pointer text-2xl sm:hidden" onClick={()=>{setIsMenu(!isMenu)}}/>
         <div className="flex flex-row space-x-3">
           <SiMicrosoftacademic className="text-2xl" />
-          <button onClick={() => navigate("/")}>WoS Traslator</button>
+          <button onClick={() => navigate("/")}>WoS DB Creator</button>
         </div>
         <div className="flex flex-row space-x-4">
           <MdSettings

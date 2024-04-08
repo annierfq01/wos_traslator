@@ -5,7 +5,7 @@ import "./index.css";
 import Home from "./routes/home";
 import About from "./routes/about";
 import BarHeather from "./components/barHeather";
-import Board, { loaderBoard } from "./routes/board";
+import Board from "./routes/board";
 import Error from "./routes/error";
 
 
@@ -16,7 +16,7 @@ const router2 = createBrowserRouter([
     errorElement: <Error/>,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/board/:Path", element: <Board />, loader:loaderBoard},
+      { path: "/board", element: <Board />},
       { path: "/about", element: <About/>}
     ],
   },
