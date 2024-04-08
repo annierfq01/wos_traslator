@@ -10,7 +10,7 @@ export function saveDictToIndexedDB(dict = model) {
   
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
-        const objectStore = db.createObjectStore(objectStoreName, { keyPath: "key", autoIncrement: false });
+        db.createObjectStore(objectStoreName, { keyPath: "key", autoIncrement: false });
       };
   
       request.onsuccess = (event) => {
@@ -101,26 +101,51 @@ export function deleteKeyFromIndexedDB(key) {
   })
 }
 
-export function clearIndexedDB() {
+export function clearIndexedDB(initialData = model) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(databaseName, 1);
 
     request.onupgradeneeded = (event) => {
-      saveDictToIndexedDB();
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(objectStoreName)) {
+        db.createObjectStore(objectStoreName, { keyPath: "key", autoIncrement: false });
+        if (initialData) {
+          const transaction = event.target.transaction;
+          const objectStore = transaction.objectStore(objectStoreName);
+          for (const [key, value] of Object.entries(initialData)) {
+            objectStore.add({ key, value });
+          }
+        }
+      }
     };
 
     request.onsuccess = (event) => {
       const db = event.target.result;
+      if (!db.objectStoreNames.contains(objectStoreName)) {
+        db.createObjectStore(objectStoreName, { keyPath: "key", autoIncrement: false });
+        if (initialData) {
+          const transaction = event.target.transaction;
+          const objectStore = transaction.objectStore(objectStoreName);
+          for (const [key, value] of Object.entries(initialData)) {
+            objectStore.add({ key, value });
+          }
+        }
+      }
+      
       const transaction = db.transaction(objectStoreName, "readwrite");
       const objectStore = transaction.objectStore(objectStoreName);
-      objectStore.clear();
+      const clearRequest = objectStore.clear();
 
-      transaction.oncomplete = () => {
-        saveDictToIndexedDB();
+      clearRequest.onsuccess = () => {
+        if (initialData) {
+          for (const [key, value] of Object.entries(initialData)) {
+            objectStore.add({ key, value });
+          }
+        }
         resolve();
       };
 
-      transaction.onerror = (error) => {
+      clearRequest.onerror = (error) => {
         reject(error);
       };
     };
@@ -128,7 +153,7 @@ export function clearIndexedDB() {
     request.onerror = (error) => {
       reject(error);
     };
-  })
+  });
 }
 
 export function addEntryToIndexedDB(key, value) {
