@@ -38,6 +38,10 @@ export const lang = {
             {
                 title:"Contactenos", 
                 content:"Para sugerir cualquier cambio no dude en contactarnos. ajfq@infomed.sld.cu"
+            },
+            {
+                title:"Version", 
+                content:"0.1"
             }
         ]
     },
@@ -80,6 +84,10 @@ export const lang = {
             {
                 title:"Contact us", 
                 content:"To suggest any change, please contact us. ajfq@infomed.sld.cu"
+            },
+            {
+                title:"Version", 
+                content:"0.1"
             }
         ]
     },
